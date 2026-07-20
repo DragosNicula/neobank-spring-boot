@@ -19,8 +19,7 @@ public class AccountService {
         accountRepository.save(account);
         String iban = createIban(account);
         account.setIban(iban);
-        accountRepository.save(account);
-        return account;
+        return accountRepository.save(account);
     }
 
     private String createIban(Account account) {

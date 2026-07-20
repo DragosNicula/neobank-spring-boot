@@ -35,8 +35,7 @@ public class TransactionService {
                 processTransactionTransfer(transaction, sourceAccount, destinationAccount);
                 break;
         }
-        transactionRepository.save(transaction);
-        return transaction;
+        return transactionRepository.save(transaction);
     }
 
     private void processTransactionDeposit(Transaction transaction, Account destinationAccount) {

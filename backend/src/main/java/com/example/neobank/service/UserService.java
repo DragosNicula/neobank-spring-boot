@@ -26,8 +26,7 @@ public class UserService {
             throw new UserException("This username already exists.");
         }
         user.setJoinDate(LocalDate.now());
-        userRepository.save(user);
-        return user;
+        return saveUser(user);
     }
 
     private Boolean passwordValidator(String password) {
@@ -37,6 +36,11 @@ public class UserService {
             return false;
         }
         return pattern.matcher(password).matches();
+    }
+
+    public User saveUser(User user) {
+        userRepository.save(user);
+        return user;
     }
 
 }
