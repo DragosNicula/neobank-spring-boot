@@ -2,9 +2,10 @@ package com.example.neobank.service;
 
 import com.example.neobank.exception.AccountException;
 import com.example.neobank.model.Account;
-import com.example.neobank.model.CurrencyType;
 import com.example.neobank.repository.AccountRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class AccountService {
@@ -33,4 +34,15 @@ public class AccountService {
                 return "RONEOBANK0000" + id;
         }
     }
+
+    public Account getAccountById(Long id) {
+        return accountRepository.findById(id).
+                orElseThrow(() -> new AccountException("Account with id " + id + " not found."));
+    }
+
+    public List<Account> getAllAccounts() {
+        return accountRepository.findAll();
+    }
+
+
 }

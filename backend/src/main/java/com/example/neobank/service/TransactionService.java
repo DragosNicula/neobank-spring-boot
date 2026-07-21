@@ -1,6 +1,7 @@
 package com.example.neobank.service;
 
 import com.example.neobank.exception.AccountException;
+import com.example.neobank.exception.TransactionException;
 import com.example.neobank.model.Account;
 import com.example.neobank.model.Transaction;
 import com.example.neobank.model.TransactionType;
@@ -22,11 +23,15 @@ public class TransactionService {
     }
 
     @Transactional
-    public Transaction createTransaction(Transaction transaction, Account sourceAccount, Account destinationAccount) {
+    public Transaction createTransaction(Transaction transaction, Long sourceAccountId, Long destinationAccountId) {
         TransactionType type = transaction.getType();
+        Account sourceAccount = accountRepository.findById(sourceAccountId).
+                orElseThrow(() -> new AccountException("Account with id is not found"));
+        Account destinationAccount = accountRepository.findById(destinationAccountId).
+                orElseThrow(() -> new AccountException("Account with id is not found"));
         switch (type) {
             case DEPOSIT:
-                processTransactionDeposit(transaction, sourceAccount);
+                processTransactionDeposit(transaction, destinationAccount);
                 break;
             case WITHDRAWAL:
                 processTransactionWithdrawal(transaction, sourceAccount);
@@ -71,5 +76,10 @@ public class TransactionService {
     private void transferProcess(Transaction transaction, Account destinationAccount) {
         destinationAccount.setSold(destinationAccount.getSold() + transaction.getSum());
         accountRepository.save(destinationAccount);
+    }
+
+    public Transaction getTransactionById(Long id) {
+        return transactionRepository.findById(id).
+                orElseThrow(() -> new TransactionException("Transaction with id: " + id + " not found."));
     }
 }
