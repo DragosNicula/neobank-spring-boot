@@ -1,8 +1,10 @@
 package com.example.neobank.service;
 
+import com.example.neobank.dto.LoginRequest;
 import com.example.neobank.exception.UserException;
 import com.example.neobank.model.User;
 import com.example.neobank.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -12,9 +14,11 @@ import java.util.regex.Pattern;
 public class UserService {
 
     private UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User createUser(User user) {
@@ -25,6 +29,7 @@ public class UserService {
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new UserException("This username already exists.");
         }
+        hashPassword(user);
         user.setJoinDate(LocalDate.now());
         return saveUser(user);
     }
@@ -38,11 +43,19 @@ public class UserService {
         return pattern.matcher(password).matches();
     }
 
-    public User saveUser(User user) {
-        userRepository.save(user);
-        return user;
+    private void hashPassword(User user) {
+        String password = user.getPassword();
+        user.setPassword(passwordEncoder.encode(password));
     }
 
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
 
+    public Boolean checkPassword(LoginRequest request) {
+        User crtUser = userRepository.findByUsername(request.getUsername()).
+                orElseThrow(() -> new UserException("User not found"));
+        return passwordEncoder.matches(request.getPassword(), crtUser.getPassword());
+    }
 
 }
