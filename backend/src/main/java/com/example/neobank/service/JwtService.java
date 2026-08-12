@@ -1,6 +1,7 @@
 package com.example.neobank.service;
 
 import com.example.neobank.dto.LoginRequest;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import io.jsonwebtoken.Jwts;
@@ -29,5 +30,31 @@ public class JwtService {
         return token;
     }
 
-//    public Boolean validateToken()
+    public Boolean validateToken(String token) {
+        try {
+            Jwts.parser()
+                    .verifyWith(getKey())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private SecretKey getKey() {
+        return Keys.hmacShaKeyFor(jwtSecret.getBytes());
+    }
+
+    public String extractUsername(String token) {
+        Claims claims = Jwts.parser()
+                .verifyWith(getKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+
+        return claims.getSubject();
+    }
+
 }
