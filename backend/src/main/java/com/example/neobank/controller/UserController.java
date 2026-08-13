@@ -1,5 +1,7 @@
 package com.example.neobank.controller;
 
+import com.example.neobank.dto.UserRequest;
+import com.example.neobank.dto.UserResponse;
 import com.example.neobank.model.User;
 import com.example.neobank.service.RegistrationService;
 import org.springframework.http.HttpStatus;
@@ -19,9 +21,10 @@ public class UserController {
     }
 
     @PostMapping()
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User created = registrationService.userRegistration(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest) {
+        User crtUser = registrationService.userRegistration(userRequest);
+        UserResponse userResponse = new UserResponse(crtUser.getId(), crtUser.getUsername(), crtUser.getJoinDate());
+        return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
     }
 
 }

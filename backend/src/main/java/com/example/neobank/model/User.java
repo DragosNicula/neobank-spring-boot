@@ -19,11 +19,12 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class User {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String username;
     private String password;
     private LocalDate joinDate;
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Address address;
 
@@ -35,4 +36,8 @@ public class User {
     )
     private List<Account> accounts = new ArrayList<>();
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 }

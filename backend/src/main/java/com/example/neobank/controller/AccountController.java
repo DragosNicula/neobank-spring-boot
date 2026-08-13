@@ -13,8 +13,8 @@ import java.util.List;
 @RequestMapping(("/api/accounts"))
 public class AccountController {
 
-    private AccountService accountService;
-    private AssignService assignService;
+    private final AccountService accountService;
+    private final AssignService assignService;
 
     public AccountController(AccountService accountService, AssignService assignService) {
         this.accountService = accountService;
@@ -22,7 +22,7 @@ public class AccountController {
     }
 
     @PostMapping()
-    public ResponseEntity<Account> createAccount (@RequestBody Account account,@RequestParam Long userId) {
+    public ResponseEntity<Account> createAccount (@RequestBody Account account, @RequestParam Long userId) {
         Account created = accountService.createAccount(account);
         assignService.assignAccountToUser(created, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);

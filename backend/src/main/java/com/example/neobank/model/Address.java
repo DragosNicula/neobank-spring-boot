@@ -30,4 +30,11 @@ public class Address {
     @JoinColumn(name="user_id")
     private User user;
 
+    public Address(String street, String town, String country, String postalCode) {
+        this.street = street;
+        this.town = town;
+        this.country = country;
+        this.postalCode = postalCode;
+    }
+
 }

@@ -17,10 +17,11 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/login", "/api/user").permitAll()
+                        .requestMatchers("/api/auth/login", "/api/users", "/h2-console/**").permitAll()
                         .anyRequest().authenticated()
+
                 )
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class).headers(headers -> headers.frameOptions(frame -> frame.disable()));
 
         return http.build();
     }

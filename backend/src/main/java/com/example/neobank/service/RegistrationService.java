@@ -1,6 +1,8 @@
 package com.example.neobank.service;
 
+import com.example.neobank.dto.UserRequest;
 import com.example.neobank.model.Account;
+import com.example.neobank.model.Address;
 import com.example.neobank.model.CurrencyType;
 import com.example.neobank.model.User;
 import org.springframework.stereotype.Service;
@@ -18,9 +20,16 @@ public class RegistrationService {
     }
 
     @Transactional
-    public User userRegistration(User user) {
+    public User userRegistration(UserRequest userRequest) {
+        User user = new User(userRequest.getUsername(), userRequest.getPassword());
         User crtUser = userService.createUser(user);
+        Address address = new Address(
+                userRequest.getStreet(),
+                userRequest.getTown(),
+                userRequest.getCountry(),
+                userRequest.getPostalCode());
         Account account = createDefaultAccount();
+        connectAddressToUser(crtUser, address);
         connectAccountToUser(crtUser, account);
         return userService.saveUser(crtUser);
     }
@@ -34,6 +43,11 @@ public class RegistrationService {
 
     private void connectAccountToUser(User user, Account account) {
         user.getAccounts().add(account);
+    }
+
+    private void connectAddressToUser(User user, Address address) {
+        address.setUser(user);
+        user.setAddress(address);
     }
 
 }
