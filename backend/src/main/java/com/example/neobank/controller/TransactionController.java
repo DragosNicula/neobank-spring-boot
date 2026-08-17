@@ -20,16 +20,16 @@ public class TransactionController {
     @PostMapping()
     public ResponseEntity<TransactionResponse> createTransaction(@RequestBody Transaction transaction, @RequestParam Long sourceAccountId, @RequestParam Long destinationAccountId) {
         Transaction crtTransaction = transactionService.createTransaction(transaction, sourceAccountId, destinationAccountId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createResponse(crtTransaction));
+        return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(crtTransaction));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<TransactionResponse> getTransactionById(@PathVariable Long id) {
         Transaction crtTransaction = transactionService.getTransactionById(id);
-        return ResponseEntity.ok(createResponse(crtTransaction));
+        return ResponseEntity.ok(toResponse(crtTransaction));
     }
 
-    private TransactionResponse createResponse(Transaction crtTransaction) {
+    private TransactionResponse toResponse(Transaction crtTransaction) {
         TransactionResponse result = new TransactionResponse(
                 crtTransaction.getCurrency(),
                 crtTransaction.getTransactionDate(),

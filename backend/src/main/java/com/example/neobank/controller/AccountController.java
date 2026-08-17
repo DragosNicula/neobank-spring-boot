@@ -1,5 +1,6 @@
 package com.example.neobank.controller;
 
+import com.example.neobank.dto.AccountResponse;
 import com.example.neobank.model.Account;
 import com.example.neobank.service.AccountService;
 import com.example.neobank.service.AssignService;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,20 +24,39 @@ public class AccountController {
     }
 
     @PostMapping()
-    public ResponseEntity<Account> createAccount (@RequestBody Account account, @RequestParam Long userId) {
+    public ResponseEntity<AccountResponse> createAccount (@RequestBody Account account, @RequestParam Long userId) {
         Account created = accountService.createAccount(account);
         assignService.assignAccountToUser(created, userId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+        return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(created));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Account> getAccountById(@PathVariable Long id) {
-        return ResponseEntity.ok(accountService.getAccountById(id));
+    public ResponseEntity<AccountResponse> getAccountById(@PathVariable Long id) {
+        Account crtAccount = accountService.getAccountById(id);
+        return ResponseEntity.ok(toResponse(crtAccount));
     }
 
     @GetMapping()
-    public ResponseEntity<List<Account>> getAllAccounts() {
-        return ResponseEntity.ok(accountService.getAllAccounts());
+    public ResponseEntity<List<AccountResponse>> getAllAccounts() {
+        List<Account> accounts = accountService.getAllAccounts();
+        return ResponseEntity.ok(toResponseList(accounts));
+    }
+
+    private AccountResponse toResponse(Account account) {
+        AccountResponse result = new AccountResponse(
+                account.getCurrency(),
+                account.getIban(),
+                account.getSold());
+        return result;
+    }
+
+    private List<AccountResponse> toResponseList(List<Account> accounts) {
+        List<AccountResponse> result = new ArrayList<>();
+        for (Account account : accounts) {
+            AccountResponse acc = toResponse(account);
+            result.add(acc);
+        }
+        return result;
     }
 
 }
