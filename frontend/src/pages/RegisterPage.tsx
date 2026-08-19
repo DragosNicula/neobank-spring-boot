@@ -4,7 +4,6 @@ import TextInput from '../components/TextInput';
 import Button from '../components/Button';
 import { createUser } from '../services/UserService';
 
-
 function RegisterPage() {
      const [user, setUser] = useState<UserRequest>({ 
           username: "", 
