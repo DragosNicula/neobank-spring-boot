@@ -1,12 +1,8 @@
-import ProtectedRoute from '../components/ProtectedRoute';
-
 function HomePage() {
 
      return (
           <div>
-               <ProtectedRoute >
-                    <h1>This is home page</h1>
-               </ProtectedRoute>
+               <h1>This is home page</h1>
           </div>
      )
 }

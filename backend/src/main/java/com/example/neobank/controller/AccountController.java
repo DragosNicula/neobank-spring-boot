@@ -1,11 +1,15 @@
 package com.example.neobank.controller;
 
 import com.example.neobank.dto.AccountResponse;
+import com.example.neobank.exception.UserException;
 import com.example.neobank.model.Account;
+import com.example.neobank.model.User;
+import com.example.neobank.repository.UserRepository;
 import com.example.neobank.service.AccountService;
 import com.example.neobank.service.AssignService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -17,10 +21,12 @@ public class AccountController {
 
     private final AccountService accountService;
     private final AssignService assignService;
+    private final UserRepository userRepository;
 
-    public AccountController(AccountService accountService, AssignService assignService) {
+    public AccountController(AccountService accountService, AssignService assignService, UserRepository userRepository) {
         this.accountService = accountService;
         this.assignService = assignService;
+        this.userRepository = userRepository;
     }
 
     @PostMapping()
@@ -37,9 +43,10 @@ public class AccountController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<AccountResponse>> getAllAccounts() {
-        List<Account> accounts = accountService.getAllAccounts();
-        return ResponseEntity.ok(toResponseList(accounts));
+    public ResponseEntity<List<AccountResponse>> getAllAccounts(Authentication authentication) {
+        User user = userRepository.findByUsername(authentication.getName())
+                .orElseThrow(() -> new UserException("User not found"));
+        return ResponseEntity.ok(toResponseList(user.getAccounts()));
     }
 
     private AccountResponse toResponse(Account account) {
