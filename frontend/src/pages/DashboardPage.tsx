@@ -2,8 +2,9 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import { useState, useEffect } from 'react';
 import { getAllAccounts } from '../services/AccountService';
 import type { AccountResponse } from '../types/AccountResponse';
+import AccountCard from '../components/AccountCard';
 
-function DashboardPage(){
+function DashboardPage() {
      const [accounts, setAccounts] = useState<AccountResponse[]>([]);
      const [loading, setLoading] = useState<boolean>(true);
 
@@ -15,7 +16,7 @@ function DashboardPage(){
                     setAccounts(response);
                } catch (e) {
                     console.log("Error retrieving accounts: " + e);
-               } finally { 
+               } finally {
                     setLoading(false);
                }
           }
@@ -24,7 +25,7 @@ function DashboardPage(){
      }, []);
 
      if (loading) {
-          return(
+          return (
                <div>
                     <ProtectedRoute>
                          <h1>Loading dashboard.</h1>
@@ -36,11 +37,11 @@ function DashboardPage(){
      return (
           <div>
                <ProtectedRoute>
-                    <ul>
-                         {accounts.map(account => (
-                              <li key={account.iban}>  {account.currency} {account.iban} {account.sold}</li>
-                         ))}
-                    </ul>
+
+                    {accounts.map(account => (
+                         <AccountCard key={account.iban} currency={account.currency} iban={account.iban} sold={account.sold} />
+                    ))}
+
                </ProtectedRoute>
           </div>
      )
