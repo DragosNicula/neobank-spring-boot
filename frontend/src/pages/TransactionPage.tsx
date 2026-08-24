@@ -10,6 +10,8 @@ import { useState, useEffect } from 'react';
 function TransactionPage() {
      const [userAccounts, setUserAccounts] = useState<string[]>([]);
      const [errorMessage, setErrorMessage] = useState<string>("");
+     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+     const [transactionStatus, setTransactionStatus] = useState<string>("");
      const [transactionRequest, setTransactionRequest] = useState<TransactionRequest>({
           currency: "",
           type: "",
@@ -40,12 +42,18 @@ function TransactionPage() {
 
      async function createTransaction() {
           try {
-               await startTransaction(transactionRequest);
+               setIsSubmitting(true);
+               setTransactionStatus("");
                setErrorMessage("");
+               await startTransaction(transactionRequest);
+               setTransactionStatus("Transaction complete...");
           } catch (e) {
                if (e instanceof Error) {
                     setErrorMessage(e.message);
+                    setTransactionStatus("");
                }
+          } finally {
+               setIsSubmitting(false);
           }
      }
 
@@ -58,8 +66,10 @@ function TransactionPage() {
                     <SelectInput value={transactionRequest.currency} field={"currency"} label={"Currency"} options={["RON", "EUR", "USD"]} handleInput={(handleFieldChange)} />
                     <TextInput value={transactionRequest.sum} label={"Sum"} field={"sum"} handleInput={handleFieldChange} />
                     {transactionRequest.type === "TRANSFER" && <TextInput value={transactionRequest.destinationAccount} label={"Destination account"} field={"destinationAccount"} handleInput={handleFieldChange} />}
-                    <Button type="button" children={"Done"} onClick={createTransaction} />
+                    <Button type="button" disabled={isSubmitting} children={"Done"} onClick={createTransaction}/>
                     <h3>{errorMessage}</h3>
+                    {isSubmitting && <h3>Processing transaction...</h3>}
+                    <h3>{transactionStatus}</h3>
                </ProtectedRoute>
           </div>
      )

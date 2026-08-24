@@ -6,6 +6,7 @@ import { loginUser } from '../services/UserService';
 
 function LoginPage() {
      const [errorMessage, setErrorMessage] = useState<string>("");
+     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
      const [loginRequest, setLoginRequest] = useState<LoginRequest>({
           username: "",
           password: ""
@@ -17,13 +18,16 @@ function LoginPage() {
 
      async function loginProcess() {
           try {
-               const response = await loginUser(loginRequest);
+               setIsSubmitting(true);
                setErrorMessage("");
-               localStorage.setItem("neobankLoginToken", response); 
+               const response = await loginUser(loginRequest);
+               localStorage.setItem("neobankLoginToken", response);
           } catch (e) {
                if (e instanceof Error) {
                     setErrorMessage(e.message);
                }
+          } finally {
+               setIsSubmitting(false);
           }
      }
 
@@ -32,7 +36,7 @@ function LoginPage() {
                <h1>This is login page.</h1>
                <TextInput label={"Username"} value={loginRequest.username} field={"username"} handleInput={handleFieldChange} />
                <TextInput label={"Password"} value={loginRequest.password} field={"password"} handleInput={handleFieldChange} />
-               <Button type={"button"} children={"Login"} onClick={loginProcess}/>
+               <Button type={"button"} disabled={isSubmitting} children={"Login"} onClick={loginProcess}/>
                <h3>{errorMessage}</h3>
           </div>
      )
