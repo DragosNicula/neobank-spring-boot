@@ -1,5 +1,5 @@
 export interface TransactionResponse {
-    currency: string;
-    transactionDate: string;
-    sum: number;
+     currency: string;
+     transactionDate: string;
+     sum: number | string;
 }
