@@ -10,12 +10,14 @@ import com.example.neobank.repository.TransactionRepository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 
 @Service
 public class TransactionService {
 
-    private TransactionRepository transactionRepository;
-    private AccountRepository accountRepository;
+    private final TransactionRepository transactionRepository;
+    private final AccountRepository accountRepository;
 
     public TransactionService(TransactionRepository transactionRepository, AccountRepository accountRepository) {
         this.transactionRepository = transactionRepository;
@@ -23,20 +25,21 @@ public class TransactionService {
     }
 
     @Transactional
-    public Transaction createTransaction(Transaction transaction, Long sourceAccountId, Long destinationAccountId) {
+    public Transaction createTransaction(Transaction transaction) {
         TransactionType type = transaction.getType();
-        Account sourceAccount = accountRepository.findById(sourceAccountId).
-                orElseThrow(() -> new AccountException("Account with id is not found"));
-        Account destinationAccount = accountRepository.findById(destinationAccountId).
-                orElseThrow(() -> new AccountException("Account with id is not found"));
+        Account sourceAccount = accountRepository.findByIban(transaction.getSourceAccount()).
+                orElseThrow(() -> new AccountException("Account with IBAN: " + transaction.getSourceAccount() + " is not found"));
+        transaction.setTransactionDate(LocalDate.now());
         switch (type) {
             case DEPOSIT:
-                processTransactionDeposit(transaction, destinationAccount);
+                processTransactionDeposit(transaction, sourceAccount);
                 break;
             case WITHDRAWAL:
                 processTransactionWithdrawal(transaction, sourceAccount);
                 break;
             default:
+                Account destinationAccount = accountRepository.findByIban(transaction.getDestinationAccount()).
+                        orElseThrow(() -> new AccountException("Account with IBAN: " + transaction.getDestinationAccount() + " is not found"));
                 processTransactionTransfer(transaction, sourceAccount, destinationAccount);
                 break;
         }

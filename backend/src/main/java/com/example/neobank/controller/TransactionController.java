@@ -18,8 +18,8 @@ public class TransactionController {
     }
 
     @PostMapping()
-    public ResponseEntity<TransactionResponse> createTransaction(@RequestBody Transaction transaction, @RequestParam Long sourceAccountId, @RequestParam Long destinationAccountId) {
-        Transaction crtTransaction = transactionService.createTransaction(transaction, sourceAccountId, destinationAccountId);
+    public ResponseEntity<TransactionResponse> createTransaction(@RequestBody Transaction transaction) {
+        Transaction crtTransaction = transactionService.createTransaction(transaction);
         return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(crtTransaction));
     }
 
