@@ -28,7 +28,7 @@ public class TransactionService {
     public Transaction createTransaction(Transaction transaction) {
         TransactionType type = transaction.getType();
         Account sourceAccount = accountRepository.findByIban(transaction.getSourceAccount()).
-                orElseThrow(() -> new AccountException("Account with IBAN: " + transaction.getSourceAccount() + " is not found"));
+                orElseThrow(() -> new AccountException("Account with IBAN: " + transaction.getSourceAccount() + " not found"));
         transaction.setTransactionDate(LocalDate.now());
         switch (type) {
             case DEPOSIT:
@@ -39,7 +39,7 @@ public class TransactionService {
                 break;
             default:
                 Account destinationAccount = accountRepository.findByIban(transaction.getDestinationAccount()).
-                        orElseThrow(() -> new AccountException("Account with IBAN: " + transaction.getDestinationAccount() + " is not found"));
+                        orElseThrow(() -> new AccountException("Account with IBAN: " + transaction.getDestinationAccount() + " not found"));
                 processTransactionTransfer(transaction, sourceAccount, destinationAccount);
                 break;
         }

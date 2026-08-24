@@ -25,10 +25,7 @@ public class AuthController {
     @PostMapping()
     public ResponseEntity<String> loginUser(@RequestBody LoginRequest request) {
 
-        Boolean checkPw = userService.checkPassword(request);
-        if (!checkPw) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect password.");
-        }
+        userService.checkPassword(request);
         String token = jwtService.generateToken(request);
         return ResponseEntity.status(HttpStatus.OK).body(token);
     }

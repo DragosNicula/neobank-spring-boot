@@ -52,10 +52,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Boolean checkPassword(LoginRequest request) {
+    public void checkPassword(LoginRequest request) {
         User crtUser = userRepository.findByUsername(request.getUsername()).
                 orElseThrow(() -> new UserException("User not found"));
-        return passwordEncoder.matches(request.getPassword(), crtUser.getPassword());
+        if (!passwordEncoder.matches(request.getPassword(), crtUser.getPassword())) {
+            throw new UserException("Incorrect password");
+        }
     }
-
 }
