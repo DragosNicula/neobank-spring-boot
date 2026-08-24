@@ -5,6 +5,7 @@ import Button from '../components/Button';
 import { createUser } from '../services/UserService';
 
 function RegisterPage() {
+     const [errorMessage, setErrorMessage] = useState<string>("");
      const [user, setUser] = useState<UserRequest>({ 
           username: "", 
           password: "", 
@@ -21,8 +22,11 @@ function RegisterPage() {
      async function registerProcess() {
           try {
                await createUser(user);
+               setErrorMessage("");
           } catch (e) {
-               console.log("Error on register: " + e);
+               if (e instanceof Error) {
+                    setErrorMessage(e.message);
+               }
           }
      }
 
@@ -36,6 +40,7 @@ function RegisterPage() {
                <TextInput label={"Country"} value={user.country} field={"country"} handleInput={handleFieldChange} />
                <TextInput label={"PostalCode"} value={user.postalCode} field={"postalCode"} handleInput={handleFieldChange} />
                <Button type={"button"} disabled={false} children={"Register"} onClick={registerProcess} />
+               <h3>{errorMessage}</h3>
           </div>
      )
 }

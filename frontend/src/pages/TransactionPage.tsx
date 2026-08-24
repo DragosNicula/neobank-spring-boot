@@ -9,9 +9,10 @@ import { useState, useEffect } from 'react';
 
 function TransactionPage() {
      const [userAccounts, setUserAccounts] = useState<string[]>([]);
+     const [errorMessage, setErrorMessage] = useState<string>("");
      const [transactionRequest, setTransactionRequest] = useState<TransactionRequest>({
           currency: "",
-          type: "", 
+          type: "",
           sourceAccount: "",
           destinationAccount: "",
           sum: 0
@@ -19,9 +20,14 @@ function TransactionPage() {
 
      useEffect(() => {
           async function fetchAccounts() {
-               const response = await getAllAccounts();
-               const ibanArray = response.map(account => account.iban);
-               setUserAccounts(ibanArray);
+               try {
+                    const response = await getAllAccounts();
+                    const ibanArray = response.map(account => account.iban);
+                    setUserAccounts(ibanArray);
+               } catch (e) {
+                    console.log(e);
+               }
+               
           }
           fetchAccounts();
      }, []);
@@ -29,13 +35,18 @@ function TransactionPage() {
 
 
      function handleFieldChange(field: string, value: string) {
-          console.log(field + " " + value);
           setTransactionRequest({ ...transactionRequest, [field]: value });
      }
 
      async function createTransaction() {
-          console.log(JSON.stringify(transactionRequest));
-          await startTransaction(transactionRequest);
+          try {
+               await startTransaction(transactionRequest);
+               setErrorMessage("");
+          } catch (e) {
+               if (e instanceof Error) {
+                    setErrorMessage(e.message);
+               }
+          }
      }
 
      return (
@@ -48,6 +59,7 @@ function TransactionPage() {
                     <TextInput value={transactionRequest.sum} label={"Sum"} field={"sum"} handleInput={handleFieldChange} />
                     {transactionRequest.type === "TRANSFER" && <TextInput value={transactionRequest.destinationAccount} label={"Destination account"} field={"destinationAccount"} handleInput={handleFieldChange} />}
                     <Button type="button" children={"Done"} onClick={createTransaction} />
+                    <h3>{errorMessage}</h3>
                </ProtectedRoute>
           </div>
      )

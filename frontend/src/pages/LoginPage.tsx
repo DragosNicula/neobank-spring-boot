@@ -5,6 +5,7 @@ import type { LoginRequest } from "../types/LoginRequest";
 import { loginUser } from '../services/UserService';
 
 function LoginPage() {
+     const [errorMessage, setErrorMessage] = useState<string>("");
      const [loginRequest, setLoginRequest] = useState<LoginRequest>({
           username: "",
           password: ""
@@ -17,9 +18,12 @@ function LoginPage() {
      async function loginProcess() {
           try {
                const response = await loginUser(loginRequest);
+               setErrorMessage("");
                localStorage.setItem("neobankLoginToken", response); 
           } catch (e) {
-               console.log("Error on login page: " + e);
+               if (e instanceof Error) {
+                    setErrorMessage(e.message);
+               }
           }
      }
 
@@ -29,6 +33,7 @@ function LoginPage() {
                <TextInput label={"Username"} value={loginRequest.username} field={"username"} handleInput={handleFieldChange} />
                <TextInput label={"Password"} value={loginRequest.password} field={"password"} handleInput={handleFieldChange} />
                <Button type={"button"} children={"Login"} onClick={loginProcess}/>
+               <h3>{errorMessage}</h3>
           </div>
      )
 }
