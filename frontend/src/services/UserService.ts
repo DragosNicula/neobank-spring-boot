@@ -4,6 +4,7 @@ import type { LoginRequest } from '../types/LoginRequest';
 import api from './Api';
 import axios from 'axios';
 
+
 export async function createUser(credentials: UserRequest): Promise<UserResponse> {
     try {
         const response = await api.post<UserResponse>('/users', credentials);
@@ -28,4 +29,8 @@ export async function loginUser(credentials: LoginRequest): Promise<string> {
         }
         throw e;
     }
+}
+
+export function logoutUser() {
+    localStorage.removeItem("neobankLoginToken");
 }

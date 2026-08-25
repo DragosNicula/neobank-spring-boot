@@ -1,11 +1,11 @@
 import type { ButtonProps } from '../types/ButtonProps';
 
-function Button ({ type, disabled, children, onClick }: ButtonProps) {
+function Button ({ type, disabled, children, className, onClick }: ButtonProps) {
      
 
      return(
           <div>
-               <button type={type} disabled={disabled} onClick={onClick}>{children}</button>
+               <button className={className} type={type} disabled={disabled} onClick={onClick}>{children}</button>
           </div>
      )
 }

@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import TextInput from '../components/TextInput';
 import Button from '../components/Button';
 import type { LoginRequest } from "../types/LoginRequest";
 import { loginUser } from '../services/UserService';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from "../context/AuthContext";
 
 function LoginPage() {
+     const auth = useContext(AuthContext);
+     const navigate = useNavigate();
      const [errorMessage, setErrorMessage] = useState<string>("");
      const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
      const [loginRequest, setLoginRequest] = useState<LoginRequest>({
@@ -22,6 +26,8 @@ function LoginPage() {
                setErrorMessage("");
                const response = await loginUser(loginRequest);
                localStorage.setItem("neobankLoginToken", response);
+               auth?.checkLogin();
+               navigate("/");
           } catch (e) {
                if (e instanceof Error) {
                     setErrorMessage(e.message);
