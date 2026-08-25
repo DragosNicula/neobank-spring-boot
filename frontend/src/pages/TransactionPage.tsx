@@ -2,6 +2,7 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import SelectInput from "../components/SelectInput";
 import TextInput from "../components/TextInput";
 import Button from "../components/Button";
+import Card from '../components/Card';
 import { getAllAccounts } from "../services/AccountService";
 import type { TransactionRequest } from "../types/TransactionRequest";
 import { startTransaction } from "../services/TransactionService";
@@ -29,7 +30,7 @@ function TransactionPage() {
                } catch (e) {
                     console.log(e);
                }
-               
+
           }
           fetchAccounts();
      }, []);
@@ -58,18 +59,19 @@ function TransactionPage() {
      }
 
      return (
-          <div>
+          <div className={"p-32"}>
                <ProtectedRoute>
-                    <h1>This is transaction page.</h1>
-                    <SelectInput value={transactionRequest.sourceAccount} field={"sourceAccount"} label={"Account"} options={userAccounts} handleInput={(handleFieldChange)} />
-                    <SelectInput value={transactionRequest.type} field={"type"} label={"Transaction type"} options={["DEPOSIT", "WITHDRAWAL", "TRANSFER"]} handleInput={(handleFieldChange)} />
-                    <SelectInput value={transactionRequest.currency} field={"currency"} label={"Currency"} options={["RON", "EUR", "USD"]} handleInput={(handleFieldChange)} />
-                    <TextInput value={transactionRequest.sum} label={"Sum"} field={"sum"} handleInput={handleFieldChange} />
-                    {transactionRequest.type === "TRANSFER" && <TextInput value={transactionRequest.destinationAccount} label={"Destination account"} field={"destinationAccount"} handleInput={handleFieldChange} />}
-                    <Button type="button" disabled={isSubmitting} children={"Done"} onClick={createTransaction}/>
-                    <h3>{errorMessage}</h3>
-                    {isSubmitting && <h3>Processing transaction...</h3>}
-                    <h3>{transactionStatus}</h3>
+                    <Card className={"flex flex-col gap-4"}>
+                         <SelectInput value={transactionRequest.sourceAccount} field={"sourceAccount"} label={"Account"} options={userAccounts} handleInput={(handleFieldChange)} />
+                         <SelectInput value={transactionRequest.type} field={"type"} label={"Transaction type"} options={["DEPOSIT", "WITHDRAWAL", "TRANSFER"]} handleInput={(handleFieldChange)} />
+                         {transactionRequest.type === "TRANSFER" && <TextInput value={transactionRequest.destinationAccount} label={"Destination account"} field={"destinationAccount"} handleInput={handleFieldChange} />}
+                         <TextInput value={transactionRequest.sum} label={"Sum"} field={"sum"} handleInput={handleFieldChange} />
+                         <SelectInput value={transactionRequest.currency} field={"currency"} label={"Currency"} options={["RON", "EUR", "USD"]} handleInput={(handleFieldChange)} />
+                         <Button className={"self-center"} type="button" variant={"primary"} disabled={isSubmitting} children={"Done"} onClick={createTransaction} />
+                         <h3>{errorMessage}</h3>
+                         {isSubmitting && <h3>Processing transaction...</h3>}
+                         <h3>{transactionStatus}</h3>
+                    </Card>
                </ProtectedRoute>
           </div>
      )

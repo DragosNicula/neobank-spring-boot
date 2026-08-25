@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import TextInput from '../components/TextInput';
 import Button from '../components/Button';
+import Card from '../components/Card';
 import type { LoginRequest } from "../types/LoginRequest";
 import { loginUser } from '../services/UserService';
 import { useNavigate } from 'react-router-dom';
@@ -17,7 +18,7 @@ function LoginPage() {
      })
 
      function handleFieldChange(field: string, value: string) {
-          setLoginRequest({...loginRequest, [field]: value});
+          setLoginRequest({ ...loginRequest, [field]: value });
      }
 
      async function loginProcess() {
@@ -38,12 +39,13 @@ function LoginPage() {
      }
 
      return (
-          <div>
-               <h1>This is login page.</h1>
-               <TextInput label={"Username"} value={loginRequest.username} field={"username"} handleInput={handleFieldChange} />
-               <TextInput label={"Password"} value={loginRequest.password} field={"password"} handleInput={handleFieldChange} />
-               <Button type={"button"} disabled={isSubmitting} children={"Login"} onClick={loginProcess}/>
-               <h3>{errorMessage}</h3>
+          <div className="p-32">
+               <Card className={"flex flex-col gap-4"}>
+                    <TextInput label={"Username"} value={loginRequest.username} field={"username"} handleInput={handleFieldChange} />
+                    <TextInput label={"Password"} type={"password"} value={loginRequest.password} field={"password"} handleInput={handleFieldChange} />
+                    <Button className={"self-center"} variant={"primary"} type={"button"} disabled={isSubmitting} children={"Login"} onClick={loginProcess} />
+                    <h3 className={"font-semibold text-alert "}>{errorMessage}</h3>
+               </Card>
           </div>
      )
 }

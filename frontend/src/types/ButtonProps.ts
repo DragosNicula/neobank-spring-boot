@@ -3,5 +3,6 @@ export interface ButtonProps {
      disabled?: boolean;
      children: string;
      className?: string;
+     variant: "primary" | "ghost" | "outline";
      onClick: () => void;
 }

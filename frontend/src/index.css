@@ -2,9 +2,9 @@
 
 @theme {
      --color-ink: #101C22;
-     --color-emerald: #0E6E4E;
-     --color-paper: #F3F5F4;
-     --color-slate: #56635F;
      --color-mist: #E2E8E5;
+     --color-border-navbar: #6e868a;
+     --color-cardbox: #F0F0F0;
      --color-alert: #C1443B;
+     --color-succes: #2F9E5C;
 }

@@ -5,7 +5,7 @@ function SelectInput({ value, label, field, options, handleInput }: SelectInputP
      return (
           <div>
                <label>{label}</label>
-               <select value={value} onChange={(e) => handleInput(field, e.target.value)}>
+               <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-ink transition-colors" value={value} onChange={(e) => handleInput(field, e.target.value)}>
                     <option value="">-- Select --</option>
                     {options.map(option => (
                          <option key={option} value={option}>{option}</option>
