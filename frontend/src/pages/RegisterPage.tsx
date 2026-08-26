@@ -2,6 +2,7 @@ import { useState } from 'react';
 import type { UserRequest } from '../types/UserRequest';
 import TextInput from '../components/TextInput';
 import Button from '../components/Button';
+import Card from '../components/Card';
 import { createUser } from '../services/UserService';
 import { useNavigate } from 'react-router-dom'
 
@@ -9,13 +10,13 @@ function RegisterPage() {
      const navigate = useNavigate();
      const [errorMessage, setErrorMessage] = useState<string>("");
      const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-     const [user, setUser] = useState<UserRequest>({ 
-          username: "", 
-          password: "", 
+     const [user, setUser] = useState<UserRequest>({
+          username: "",
+          password: "",
           street: "",
-          town: "", 
-          country: "", 
-          postalCode: "" 
+          town: "",
+          country: "",
+          postalCode: ""
      });
 
      function handleFieldChange(field: string, value: string) {
@@ -38,18 +39,20 @@ function RegisterPage() {
      }
 
      return (
-          <div>
-               <h1>This is register page.</h1>
-               <TextInput label={"Username"} value={user.username} field={"username"} handleInput={handleFieldChange} />
-               <TextInput label={"Password"} value={user.password} field={"password"} handleInput={handleFieldChange} />
-               <TextInput label={"Street"} value={user.street} field={"street"} handleInput={handleFieldChange} />
-               <TextInput label={"Town"} value={user.town} field={"town"} handleInput={handleFieldChange} />
-               <TextInput label={"Country"} value={user.country} field={"country"} handleInput={handleFieldChange} />
-               <TextInput label={"PostalCode"} value={user.postalCode} field={"postalCode"} handleInput={handleFieldChange} />
-               <Button className={"bg-emerald px-2 py-1 rounded-md text-paper"}  type={"button"} disabled={isSubmitting} children={"Register"} onClick={registerProcess} />
-               <h3>{errorMessage}</h3>
-               {isSubmitting && <h3>Registering...</h3>}
+          <div className="p-4">
+               <Card className={"flex flex-col gap-4"}>
+                    <TextInput label={"Username"} value={user.username} field={"username"} handleInput={handleFieldChange} />
+                    <TextInput label={"Password"} value={user.password} field={"password"} handleInput={handleFieldChange} />
+                    <TextInput label={"Street"} value={user.street} field={"street"} handleInput={handleFieldChange} />
+                    <TextInput label={"Town"} value={user.town} field={"town"} handleInput={handleFieldChange} />
+                    <TextInput label={"Country"} value={user.country} field={"country"} handleInput={handleFieldChange} />
+                    <TextInput label={"PostalCode"} value={user.postalCode} field={"postalCode"} handleInput={handleFieldChange} />
+                    <Button variant={"primary"} type={"button"} disabled={isSubmitting} children={"Register"} onClick={registerProcess} />
+                    <h3>{errorMessage}</h3>
+                    {isSubmitting && <h3>Registering...</h3>}
+               </Card>
           </div>
+
      )
 }
 

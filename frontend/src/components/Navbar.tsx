@@ -20,7 +20,7 @@ function Navbar() {
 
      return (
           <div className="flex justify-between items-center bg-mist border-b-2 border-border-navbar">
-               <div className="flex px-64 items-center">
+               <div className="flex px-4 md:px-12 lg:px-64 items-center">
                     <div className="w-64 pb-2 pt-2">
                          <img src={logo} alt="Logo" />
                     </div>
@@ -31,7 +31,7 @@ function Navbar() {
                     </div>
                </div>
 
-               <div className="flex px-32">
+               <div className="flex px-4 md:px-12 lg:px-32">
                     {auth?.isLoggedIn ?
                          <Button variant={"primary"} type={"button"} children={"Logout"} onClick={startLogoutProcess} /> :
                          <div className="flex gap-2">

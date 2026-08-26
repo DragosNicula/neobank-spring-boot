@@ -4,7 +4,7 @@ import { getAllAccounts } from '../services/AccountService';
 import type { AccountResponse } from '../types/AccountResponse';
 import AccountCard from '../components/AccountCard';
 
-function DashboardPage() {
+function ProfilePage() {
      const [accounts, setAccounts] = useState<AccountResponse[]>([]);
      const [loading, setLoading] = useState<boolean>(true);
 
@@ -39,7 +39,7 @@ function DashboardPage() {
                <ProtectedRoute>
 
                     {accounts.map(account => (
-                         <AccountCard key={account.iban} currency={account.currency} iban={account.iban} sold={account.sold} />
+                         <AccountCard key={account.iban} currency={account.currency} iban={account.iban} sold={account.sold.toLocaleString()} />
                     ))}
 
                </ProtectedRoute>
@@ -47,4 +47,4 @@ function DashboardPage() {
      )
 }
 
-export default DashboardPage;
+export default ProfilePage;

@@ -70,7 +70,7 @@ function TransactionPage() {
                          <Button className={"self-center"} type="button" variant={"primary"} disabled={isSubmitting} children={"Done"} onClick={createTransaction} />
                          <h3>{errorMessage}</h3>
                          {isSubmitting && <h3>Processing transaction...</h3>}
-                         <h3>{transactionStatus}</h3>
+                         <h3 className={"self-center"}>{transactionStatus}</h3>
                     </Card>
                </ProtectedRoute>
           </div>
