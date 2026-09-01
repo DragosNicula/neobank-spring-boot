@@ -16,6 +16,7 @@ function Navbar() {
      function startLogoutProcess() {
           logoutUser();
           auth?.checkLogin();
+          navigate("/");
      }
 
      return (

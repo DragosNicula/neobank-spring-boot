@@ -1,6 +1,7 @@
 import type { UserRequest } from '../types/UserRequest';
 import type { UserResponse } from '../types/UserResponse';
 import type { LoginRequest } from '../types/LoginRequest';
+import type { UserProfile } from '../types/UserProfile';
 import api from './Api';
 import axios from 'axios';
 
@@ -33,4 +34,18 @@ export async function loginUser(credentials: LoginRequest): Promise<string> {
 
 export function logoutUser() {
     localStorage.removeItem("neobankLoginToken");
+}
+
+export async function getProfileData(): Promise<UserProfile> {
+    try {
+        const response = await api.get<UserProfile>('/users/me');
+        console.log(JSON.stringify(response));
+        return response.data;
+    } catch (e) {
+        if (axios.isAxiosError(e)) {
+            const errorData = e.response?.data;
+            throw new Error(errorData.message);
+        }
+        throw e;
+    }
 }
