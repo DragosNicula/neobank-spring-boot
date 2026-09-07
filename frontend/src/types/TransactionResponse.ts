@@ -2,4 +2,7 @@ export interface TransactionResponse {
      currency: string;
      transactionDate: string;
      sum: number | string;
+     type?: string;
+     sourceAccount?: string;
+     destinationAccount?: string;
 }
