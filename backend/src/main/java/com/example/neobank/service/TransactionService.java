@@ -1,5 +1,6 @@
 package com.example.neobank.service;
 
+import com.example.neobank.dto.TransactionResponse;
 import com.example.neobank.exception.AccountException;
 import com.example.neobank.exception.TransactionException;
 import com.example.neobank.model.Account;
@@ -11,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -84,5 +87,20 @@ public class TransactionService {
     public Transaction getTransactionById(Long id) {
         return transactionRepository.findById(id).
                 orElseThrow(() -> new TransactionException("Transaction with id: " + id + " not found."));
+    }
+
+    public List<Transaction> getUserTransactions(String username) {
+        List<Account> userAccounts = accountRepository.findByUsers_Username(username);
+        List<String> userIbans = getUserIbans(userAccounts);
+        List<Transaction> result = transactionRepository.findByAccountInvolved(userIbans);
+        return result;
+    }
+
+    private List<String> getUserIbans(List<Account> userAccounts) {
+        List<String> result = new ArrayList<>();
+        for (Account account : userAccounts) {
+            result.add(account.getIban());
+        }
+        return result;
     }
 }

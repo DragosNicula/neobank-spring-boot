@@ -9,4 +9,6 @@ import java.util.Optional;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {
     public Optional<Account> findByIban(String iban);
+
+    public List<Account> findByUsers_Username(String username);
 }
