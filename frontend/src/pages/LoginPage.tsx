@@ -44,7 +44,7 @@ function LoginPage() {
                     <TextInput label={"Username"} value={loginRequest.username} field={"username"} handleInput={handleFieldChange} />
                     <TextInput label={"Password"} type={"password"} value={loginRequest.password} field={"password"} handleInput={handleFieldChange} />
                     <Button className={"self-center"} variant={"primary"} type={"button"} disabled={isSubmitting} children={"Login"} onClick={loginProcess} />
-                    <h3 className={"font-semibold text-alert "}>{errorMessage}</h3>
+                    <h3 className={"font-semibold text-alert self-center"}>{errorMessage}</h3>
                </Card>
           </div>
      )

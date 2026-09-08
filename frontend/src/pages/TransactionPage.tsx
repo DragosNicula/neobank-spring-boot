@@ -14,7 +14,6 @@ function TransactionPage() {
      const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
      const [transactionStatus, setTransactionStatus] = useState<string>("");
      const [transactionRequest, setTransactionRequest] = useState<TransactionRequest>({
-          currency: "",
           type: "",
           sourceAccount: "",
           destinationAccount: "",
@@ -66,9 +65,8 @@ function TransactionPage() {
                          <SelectInput value={transactionRequest.type} field={"type"} label={"Transaction type"} options={["DEPOSIT", "WITHDRAWAL", "TRANSFER"]} handleInput={(handleFieldChange)} />
                          {transactionRequest.type === "TRANSFER" && <TextInput value={transactionRequest.destinationAccount} label={"Destination account"} field={"destinationAccount"} handleInput={handleFieldChange} />}
                          <TextInput value={transactionRequest.sum} label={"Sum"} field={"sum"} handleInput={handleFieldChange} />
-                         <SelectInput value={transactionRequest.currency} field={"currency"} label={"Currency"} options={["RON", "EUR", "USD"]} handleInput={(handleFieldChange)} />
                          <Button className={"self-center"} type="button" variant={"primary"} disabled={isSubmitting} children={"Done"} onClick={createTransaction} />
-                         <h3>{errorMessage}</h3>
+                         <h3 className={"font-semibold text-alert self-center"}>{errorMessage}</h3>
                          {isSubmitting && <h3>Processing transaction...</h3>}
                          <h3 className={"self-center"}>{transactionStatus}</h3>
                     </Card>
