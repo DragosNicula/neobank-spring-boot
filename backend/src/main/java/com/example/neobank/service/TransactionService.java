@@ -33,6 +33,7 @@ public class TransactionService {
         Account sourceAccount = accountRepository.findByIban(transaction.getSourceAccount()).
                 orElseThrow(() -> new AccountException("Account with IBAN: " + transaction.getSourceAccount() + " not found"));
         transaction.setTransactionDate(LocalDate.now());
+        transaction.setCurrency(sourceAccount.getCurrency().toString());
         switch (type) {
             case DEPOSIT:
                 processTransactionDeposit(transaction, sourceAccount);
