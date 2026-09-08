@@ -49,7 +49,7 @@ function ProfilePage() {
                try {
                     const response = await getAllTransactionsForUser();
                     setTransactions(response);
-               } catch(e) {
+               } catch (e) {
                     console.log("Error loading transactions: " + e);
                }
           }
@@ -104,7 +104,13 @@ function ProfilePage() {
                                                                  t.type === "WITHDRAWAL" ? "text-sm font-medium text-alert" :
                                                                       "text-sm font-medium text-ink"
                                                        }>{t.type}</p>
-                                                       <p className="text-xs text-slate">{t.transactionDate}</p>
+                                                       <p className="text-xs text-slate">{new Date(t.transactionDate).toLocaleString('en-GB', {
+                                                            day: 'numeric',
+                                                            month: 'short',
+                                                            year: 'numeric',
+                                                            hour: '2-digit',
+                                                            minute: '2-digit'
+                                                       })}</p>
                                                        <p className="text-xs text-slate">
                                                             {t.sourceAccount}{t.destinationAccount && ` → ${t.destinationAccount}`}
                                                        </p>
