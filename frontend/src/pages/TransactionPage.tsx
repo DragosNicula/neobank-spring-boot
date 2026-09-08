@@ -7,10 +7,8 @@ import { getAllAccounts } from "../services/AccountService";
 import type { TransactionRequest } from "../types/TransactionRequest";
 import { startTransaction } from "../services/TransactionService";
 import { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
 
 function TransactionPage() {
-     const navigate = useNavigate();
      const [userAccounts, setUserAccounts] = useState<string[]>([]);
      const [errorMessage, setErrorMessage] = useState<string>("");
      const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -49,7 +47,12 @@ function TransactionPage() {
                setErrorMessage("");
                await startTransaction(transactionRequest);
                setTransactionStatus("Transaction complete...");
-               navigate("/");
+               setTransactionRequest({
+                    type: "",
+                    sourceAccount: "",
+                    destinationAccount: "",
+                    sum: 0
+               });
           } catch (e) {
                if (e instanceof Error) {
                     setErrorMessage(e.message);
