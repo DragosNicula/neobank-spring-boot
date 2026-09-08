@@ -49,8 +49,8 @@ function ProfilePage() {
                try {
                     const response = await getAllTransactionsForUser();
                     setTransactions(response);
-               } catch {
-                    console.log("Error loading transactions.");
+               } catch(e) {
+                    console.log("Error loading transactions: " + e);
                }
           }
      }

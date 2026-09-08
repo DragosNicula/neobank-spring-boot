@@ -28,7 +28,7 @@ function TransactionPage() {
                     const ibanArray = response.map(account => account.iban);
                     setUserAccounts(ibanArray);
                } catch (e) {
-                    console.log(e);
+                    console.log("Error on Transaction Page:" + e);
                }
 
           }

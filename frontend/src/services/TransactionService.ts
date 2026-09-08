@@ -19,7 +19,6 @@ export async function startTransaction(credentials: TransactionRequest): Promise
 export async function getAllTransactionsForUser(): Promise<TransactionResponse[]> {
      try {
           const response = await api.get<TransactionResponse[]>("/transaction/history");
-          console.log(response.data);
           return response.data;
      } catch(e) {
           if(axios.isAxiosError(e)) {

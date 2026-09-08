@@ -39,7 +39,6 @@ export function logoutUser() {
 export async function getProfileData(): Promise<UserProfile> {
     try {
         const response = await api.get<UserProfile>('/users/me');
-        console.log(JSON.stringify(response));
         return response.data;
     } catch (e) {
         if (axios.isAxiosError(e)) {
