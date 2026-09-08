@@ -11,7 +11,7 @@ import com.example.neobank.repository.TransactionRepository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class TransactionService {
         TransactionType type = transaction.getType();
         Account sourceAccount = accountRepository.findByIban(transaction.getSourceAccount()).
                 orElseThrow(() -> new AccountException("Account with IBAN: " + transaction.getSourceAccount() + " not found"));
-        transaction.setTransactionDate(LocalDate.now());
+        transaction.setTransactionDate(LocalDateTime.now());
         transaction.setCurrency(sourceAccount.getCurrency().toString());
         switch (type) {
             case DEPOSIT:

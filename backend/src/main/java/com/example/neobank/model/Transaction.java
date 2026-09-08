@@ -1,6 +1,6 @@
 package com.example.neobank.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -32,7 +32,7 @@ public class Transaction {
 
     @Column(name="destination_account", nullable=true)
     private String destinationAccount;
-    private LocalDate transactionDate;
+    private LocalDateTime transactionDate;
     private double sum;
 
     @Enumerated(EnumType.STRING)
